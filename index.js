@@ -11,11 +11,14 @@ const expressServer = createServer(app);
 const io = new Server(expressServer);
 
 io.on("connection", (socket) => {
+  socket.on("message", (msg) => {
+    socket.emit("newMessage", msg);
+  });
+
   setInterval(() => {
     const d = new Date();
     const time = d.toLocaleTimeString();
-    socket.emit("myEvent", time);
-    // socket.send(time);
+    socket.emit("timeEvent", time);
   }, 1000);
   console.log("New user connected!");
   socket.on("disconnect", () => {

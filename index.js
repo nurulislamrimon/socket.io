@@ -1,19 +1,30 @@
 import express from "express";
-import http from "http";
-import { dirname } from "path";
+import { createServer } from "http";
+import { dirname, join } from "path";
+import { Server } from "socket.io";
 import { fileURLToPath } from "url";
-
-const app = express();
+// config
 const port = 5000;
+// app and server
+const app = express();
+const expressServer = createServer(app);
+const io = new Server(expressServer);
 
-const root_dir = dirname(fileURLToPath(import.meta.url));
-
-const indexHtml = root_dir + "/ejs/index.html";
-
-const server = http.createServer(app);
-app.get("/", (req, res) => {
-  res.sendFile(indexHtml);
-  //   res.send({ result: "success" });
+io.on("connection", (socket) => {
+  console.log("New user connected!");
+  socket.on("disconnect", () => {
+    console.log("User disconnected!");
+  });
 });
 
-server.listen(port, () => console.log(`Server is listening at port: ${port}`));
+// paths
+const root_dir = dirname(fileURLToPath(import.meta.url));
+const indexHtml = join(root_dir, "index.html");
+
+app.get("/", (req, res) => {
+  res.sendFile(indexHtml);
+});
+
+expressServer.listen(port, () =>
+  console.log(`Server is listening at port: ${port}`)
+);

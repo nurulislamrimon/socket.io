@@ -10,7 +10,17 @@ const app = express();
 const expressServer = createServer(app);
 const io = new Server(expressServer);
 
+// paths
+const root_dir = dirname(fileURLToPath(import.meta.url));
+const indexHtml = join(root_dir, "index.html");
+
+app.get("/", (req, res) => {
+  res.sendFile(indexHtml);
+});
+
 io.on("connection", (socket) => {
+  io.sockets.emit("myBroadcast", "My first Broadcast");
+
   socket.on("message", (msg) => {
     socket.emit("newMessage", msg);
   });
@@ -20,18 +30,11 @@ io.on("connection", (socket) => {
     const time = d.toLocaleTimeString();
     socket.emit("timeEvent", time);
   }, 1000);
+
   console.log("New user connected!");
   socket.on("disconnect", () => {
     console.log("User disconnected!");
   });
-});
-
-// paths
-const root_dir = dirname(fileURLToPath(import.meta.url));
-const indexHtml = join(root_dir, "index.html");
-
-app.get("/", (req, res) => {
-  res.sendFile(indexHtml);
 });
 
 expressServer.listen(port, () =>

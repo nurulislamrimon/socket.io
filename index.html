@@ -38,6 +38,9 @@
         timeContainer.innerText = time;
       });
 
+      socket.on("myBroadcast", (msg) => {
+        console.log(msg);
+      });
       socket.on("newMessage", (msg) => {
         const li = document.createElement("li");
         li.innerText = msg;

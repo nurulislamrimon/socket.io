@@ -16,7 +16,7 @@
     </style>
   </head>
   <body>
-    <h1 id="timeContainer"></h1>
+    <h1 id="greeting"></h1>
     <ul id="messages"></ul>
 
     <input type="text" id="msgInput" />
@@ -24,27 +24,12 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      const timeContainer = document.querySelector("#timeContainer");
-      const msgContainer = document.querySelector("#messages");
-      const msgInput = document.querySelector("#msgInput");
+      const greeting = document.querySelector("#greeting");
 
-      let socket = io();
-      const handleSendMsg = (e) => {
-        socket.send(msgInput.value);
-      };
+      let socket = io("/member");
 
-      socket.on("timeEvent", (time) => {
-        timeContainer.innerText = "";
-        timeContainer.innerText = time;
-      });
-
-      socket.on("myBroadcast", (msg) => {
-        console.log(msg);
-      });
-      socket.on("newMessage", (msg) => {
-        const li = document.createElement("li");
-        li.innerText = msg;
-        msgContainer.appendChild(li);
+      socket.on("message", (msg) => {
+        greeting.innerText = msg;
       });
     </script>
   </body>

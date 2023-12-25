@@ -6,11 +6,16 @@
     <title>Document</title>
   </head>
   <body>
-    hello
+    <ul id="messages"></ul>
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
+      const msgContainer = document.querySelector("#messages");
       let socket = io();
-      console.dir(io);
+      socket.on("message", (msg) => {
+        msgContainer.innerText = "";
+        msgContainer.innerText = msg;
+      });
     </script>
   </body>
 </html>

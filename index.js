@@ -11,6 +11,11 @@ const expressServer = createServer(app);
 const io = new Server(expressServer);
 
 io.on("connection", (socket) => {
+  setInterval(() => {
+    const d = new Date();
+    const time = d.toLocaleTimeString();
+    socket.send(time);
+  }, 1000);
   console.log("New user connected!");
   socket.on("disconnect", () => {
     console.log("User disconnected!");

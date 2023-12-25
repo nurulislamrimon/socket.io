@@ -14,7 +14,8 @@ io.on("connection", (socket) => {
   setInterval(() => {
     const d = new Date();
     const time = d.toLocaleTimeString();
-    socket.send(time);
+    socket.emit("myEvent", time);
+    // socket.send(time);
   }, 1000);
   console.log("New user connected!");
   socket.on("disconnect", () => {

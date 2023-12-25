@@ -12,7 +12,7 @@
     <script>
       const msgContainer = document.querySelector("#messages");
       let socket = io();
-      socket.on("message", (msg) => {
+      socket.on("myEvent", (msg) => {
         msgContainer.innerText = "";
         msgContainer.innerText = msg;
       });

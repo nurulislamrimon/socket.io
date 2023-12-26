@@ -11,21 +11,22 @@ const expressServer = createServer(app);
 const io = new Server(expressServer);
 
 io.on("connection", (socket) => {
-  socket.on("message", (msg) => {
-    io.emit("newMessage", msg);
-  });
+  socket.join("member-room");
+  const connectedMembers = io.sockets.adapter.rooms.get("member-room").size;
+  io.sockets
+    .in("member-room")
+    .emit("discuss", "Hello everyone! connected = " + connectedMembers);
 
-  setInterval(() => {
-    const d = new Date();
-    const time = d.toLocaleTimeString();
-    socket.emit("timeEvent", time);
-  }, 1000);
-  console.log("New user connected!");
-  socket.on("disconnect", () => {
-    console.log("User disconnected!");
-  });
+  socket.join("committee-room");
+  const connectedCommittee =
+    io.sockets.adapter.rooms.get("committee-room").size;
+  io.sockets
+    .in("committee-room")
+    .emit(
+      "meeting",
+      "Hello honourable members! connected = " + connectedCommittee
+    );
 });
-
 // paths
 const root_dir = dirname(fileURLToPath(import.meta.url));
 const indexHtml = join(root_dir, "index.html");

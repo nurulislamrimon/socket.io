@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        height: calc(100vh - 30px);
+        overflow: hidden;
+        padding: 0 10px;
+        position: relative;
+      }
       ul > li {
         list-style: none;
         padding: 10px 30px;
@@ -13,14 +24,34 @@
         border-radius: 10px 0 5px 7px;
         width: fit-content;
       }
+      section {
+        position: absolute;
+        width: 100%;
+        padding: 0 2%;
+        bottom: 0;
+      }
+      section > * {
+        font-size: xx-large;
+      }
+      section > input {
+        width: 80%;
+      }
+      section > button {
+        width: 18%;
+        background-color: rgb(59, 59, 143);
+        color: white;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
     <h1 id="timeContainer"></h1>
     <ul id="messages"></ul>
 
-    <input type="text" id="msgInput" />
-    <button onclick="handleSendMsg()">Send</button>
+    <section>
+      <input type="text" id="msgInput" />
+      <button onclick="handleSendMsg()">Send</button>
+    </section>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -39,7 +70,7 @@
         timeContainer.innerText = time;
       });
 
-      socket.on("newMessage", (msg) => {
+      socket.on("meeting", (msg) => {
         const li = document.createElement("li");
         li.innerText = msg;
         msgContainer.appendChild(li);

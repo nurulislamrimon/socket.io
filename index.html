@@ -29,6 +29,7 @@
       const msgInput = document.querySelector("#msgInput");
 
       let socket = io();
+
       const handleSendMsg = (e) => {
         socket.send(msgInput.value);
       };

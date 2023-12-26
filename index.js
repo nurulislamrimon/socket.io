@@ -12,7 +12,7 @@ const io = new Server(expressServer);
 
 io.on("connection", (socket) => {
   socket.on("message", (msg) => {
-    socket.emit("newMessage", msg);
+    io.emit("newMessage", msg);
   });
 
   setInterval(() => {
